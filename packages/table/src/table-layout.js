@@ -112,7 +112,8 @@ class TableLayout {
 
   updateColumnsWidth() {
     const fit = this.fit;
-    const bodyWidth = this.table.$el.clientWidth;
+    // const bodyWidth = this.table.$el.clientWidth;
+    const bodyWidth = this.table.$el.offsetWidth;
     let bodyMinWidth = 0;
 
     const flattenColumns = this.getFlattenColumns();
