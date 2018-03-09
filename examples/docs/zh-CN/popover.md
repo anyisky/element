@@ -162,7 +162,7 @@ Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的
   placement="right"
   width="400"
   trigger="click">
-  <el-table :data="gridData">
+  <el-table :data="gridData" border>
     <el-table-column width="150" property="date" label="日期"></el-table-column>
     <el-table-column width="100" property="name" label="姓名"></el-table-column>
     <el-table-column width="300" property="address" label="地址"></el-table-column>
@@ -213,7 +213,7 @@ Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的
   <p>这是一段内容这是一段内容确定删除吗？</p>
   <div style="text-align: right; margin: 0">
     <el-button size="mini" type="text" @click="visible2 = false">取消</el-button>
-    <el-button type="primary" size="mini" @click="visible2 = false">确定</el-button>
+    <el-button type="text" size="mini" @click="visible2 = false">确定</el-button>
   </div>
 </el-popover>
 
