@@ -25,17 +25,17 @@
     }
   }
   .bg-blue {
-    background-color: #409EFF;
+    background-color: #00BCD6;
   }
 
   .bg-success {
-    background-color: #67C23A;
+    background-color: #4CB050;
   }
   .bg-warning {
-    background-color: #E6A23C;
+    background-color: #F7BA2A;
   }
   .bg-danger {
-    background-color: #F56C6C;
+    background-color: #FF4159;
   }
   .bg-info {
     background-color: #909399;
@@ -82,7 +82,7 @@ Element 主要品牌颜色是鲜艳、友好的蓝色。
 
 <el-row :gutter="12">
   <el-col :span="6">
-    <div class="demo-color-box bg-blue">Blue<div class="value">#409EFF</div></div>
+    <div class="demo-color-box bg-blue">Blue<div class="value">#00BCD6</div></div>
   </el-col>
 </el-row>
 
@@ -92,13 +92,13 @@ Element 主要品牌颜色是鲜艳、友好的蓝色。
 
 <el-row :gutter="12">
   <el-col :span="6">
-    <div class="demo-color-box bg-success">Success<div class="value">#67C23A</div></div>
+    <div class="demo-color-box bg-success">Success<div class="value">#4CB050</div></div>
   </el-col>
   <el-col :span="6">
-    <div class="demo-color-box bg-warning">Warning<div class="value">#E6A23C</div></div>
+    <div class="demo-color-box bg-warning">Warning<div class="value">#F7BA2A</div></div>
   </el-col>
   <el-col :span="6">
-    <div class="demo-color-box bg-danger">Danger<div class="value">#F56C6C</div></div>
+    <div class="demo-color-box bg-danger">Danger<div class="value">#FF4159</div></div>
   </el-col>
   <el-col :span="6">
     <div class="demo-color-box bg-info">Info<div class="value">#909399</div></div>

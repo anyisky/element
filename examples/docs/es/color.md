@@ -25,17 +25,17 @@
     }
   }
   .bg-blue {
-    background-color: #409EFF;
+    background-color: #00BCD6;
   }
 
   .bg-success {
-    background-color: #13CE66;
+    background-color: #4CB050;
   }
   .bg-warning {
-    background-color: #f7ba2a;
+    background-color: #F7BA2A;
   }
   .bg-danger {
-    background-color: #ff4949;
+    background-color: #FF4159;
   }
   .bg-info {
     background-color: #909399;
@@ -91,13 +91,13 @@ Además del color principal, se necesitan utilizar distintos colores para difere
 
 <el-row :gutter="12">
   <el-col :span="6">
-    <div class="demo-color-box bg-success">Éxito<div class="value">#67C23A</div></div>
+    <div class="demo-color-box bg-success">Success<div class="value">#4CB050</div></div>
   </el-col>
   <el-col :span="6">
-    <div class="demo-color-box bg-warning">Precaución<div class="value">#E6A23C</div></div>
+    <div class="demo-color-box bg-warning">Warning<div class="value">#F7BA2A</div></div>
   </el-col>
   <el-col :span="6">
-    <div class="demo-color-box bg-danger">Peligro<div class="value">#F56C6C</div></div>
+    <div class="demo-color-box bg-danger">Danger<div class="value">#FF4159</div></div>
   </el-col>
   <el-col :span="6">
     <div class="demo-color-box bg-info">Info<div class="value">#909399</div></div>
