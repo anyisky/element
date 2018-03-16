@@ -281,12 +281,12 @@
           <li class="nav-item nav-algolia-search" v-show="isComponentPage">
             <algolia-search></algolia-search>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link
               active-class="active"
               :to="`/${ lang }/guide`">{{ langConfig.guide }}
             </router-link>
-          </li>
+          </li> -->
           <li class="nav-item">
             <router-link
               active-class="active"
@@ -331,7 +331,7 @@
           </li>
 
           <!-- 语言选择器 -->
-          <li class="nav-item lang-item">
+          <!-- <li class="nav-item lang-item">
             <el-dropdown
               trigger="click"
               class="nav-dropdown nav-lang"
@@ -352,7 +352,7 @@
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-          </li>
+          </li> -->
           
           <!--theme picker-->
           <li class="nav-item nav-theme-switch" v-show="isComponentPage">

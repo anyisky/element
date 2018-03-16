@@ -1,12 +1,6 @@
 ## 快速上手
 
-本节将介绍如何在项目中使用 Element。
-
-### 使用 Starter Kit
-
-我们提供了通用的[项目模板](https://github.com/ElementUI/element-starter)，你可以直接使用。对于 Laravel 用户，我们也准备了相应的[模板](https://github.com/ElementUI/element-in-laravel-starter)，同样可以直接下载使用。
-
-如果不希望使用我们提供的模板，请继续阅读。
+本节将介绍如何在项目中使用 Kyligence-ui，因为是基于element ui的二次开发，所以用法基本和element ui是一致的。
 
 ### 使用 vue-cli
 
@@ -16,7 +10,7 @@
 > npm i -g vue-cli
 > mkdir my-project && cd my-project
 > vue init webpack
-> npm i && npm i element-ui
+> npm i && npm i kyligence-ui
 ```
 
 ### 引入 Element
@@ -28,8 +22,8 @@
 在 main.js 中写入以下内容：
 ```javascript
 import Vue from 'vue'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import ElementUI from 'kyligence-ui'
+import 'kyligence-ui/lib/theme-chalk/index.css'
 import App from './App.vue'
 
 Vue.use(ElementUI)
@@ -58,7 +52,7 @@ npm install babel-plugin-component -D
     ["es2015", { "modules": false }]
   ],
   "plugins": [["component", {
-      "libraryName": "element-ui",
+      "libraryName": "kyligence-ui",
       "styleLibraryName": "theme-chalk"
     }
   ]]
@@ -69,7 +63,7 @@ npm install babel-plugin-component -D
 
 ```javascript
 import Vue from 'vue'
-import { Button, Select } from 'element-ui'
+import { Button, Select } from 'kyligence-ui'
 import App from './App.vue'
 
 Vue.component(Button.name, Button)
@@ -85,7 +79,7 @@ new Vue({
 })
 ```
 
-完整组件列表和引入方式（完整组件列表以 [components.json](https://github.com/ElemeFE/element/blob/master/components.json) 为准）
+完整组件列表和引入方式（完整组件列表以 [components.json](https://github.com/Kyligence/element/blob/dev/components.json) 为准）
 
 ```javascript
 import Vue from 'vue'
@@ -157,7 +151,7 @@ import {
   MessageBox,
   Message,
   Notification
-} from 'element-ui'
+} from 'kyligence-ui'
 
 Vue.use(Pagination)
 Vue.use(Dialog)
@@ -239,14 +233,14 @@ Vue.prototype.$message = Message
 完整引入 Element：
 ```JS
 import Vue from 'vue'
-import Element from 'element-ui'
+import Element from 'kyligence-ui'
 Vue.use(Element, { size: 'small' })
 ```
 
 按需引入 Element：
 ```JS
 import Vue from 'vue'
-import { Button } from 'element-ui'
+import { Button } from 'kyligence-ui'
 
 Vue.prototype.$ELEMENT = { size: 'small' }
 Vue.use(Button)
