@@ -1,10 +1,41 @@
 ## Changelog
 
+### 2.2.2
+
+*2018-03-14*
+
+- Added `clear` event for Input, #9988 (by @blackmiaool)
+- Now manual input of ColorPicker supports `hsl`, `hsv` and `rgb` modes, #9991
+- Fixed DatePicker not triggering `change` event when its initial value is cleared, #9986
+- Now icon class related attributes of Rate support dynamic updates, #10003
+- Fixed Table with fixed columns not updating its height correctly if `max-height` is set, #10034
+- Now DatePicker's range mode supports reverse selection (clicking the end date, then clicking the start date), #8156 (by @earlymeme)
+- Added `disabled` attribute for Pagination, #10006
+- Added `after-enter` and ` after-leave` events for Popover, #10047
+- Fixed Select not triggering validation when user selects an option after executing `resetFields` of Form, #10105
+- Fixed incorrect widths of fixed columns of Table in some cases, #10130
+- Fixed MessageBox inheriting the `title` attribute of its previous instance when called without `title`, #10126 (by @Pochodaydayup)
+- Added `input-size` attribute for Slider, #10154
+- Added `left-check-change` and `right-check-change` events for Transfer, #10156
+
+### 2.2.1
+
+*2018-03-02*
+
+- Fixed Aside, Header and Footer shrinking in some layout, #9812
+- Fixed Table with a `height` attribute not rendering in SSR, #9876
+- Fixed expandable Table not calculating its height when a row is expanded, #9848
+- Fixed `change` event not trigger when manually typing date in DateTimePicker, #9913
+- Fixed Select showing its options when the input box is right-clicked, #9894 (by @openks)
+- Added `tooltip-class` attribute for Slider, #9957
+- Now Select will stay focused after selection, #9857 (by @Seebiscuit)
+- Added `target-order` attribute for Transfer, #9960
+
 ### 2.2.0 Graphite
 
 *2018-02-12*
 
-### New features
+#### New features
 - Menu
   - Added `popper-class` and `disabled` attributes for SubMenu, #9604 #9771
   - Horizontal Menu now supports multi-layered SubMenu, #9741
@@ -17,7 +48,7 @@
 - Select
   - Added `popper-append-to-body` attribute, #9782
 
-### Bug fixes
+#### Bug fixes
 - Table
   - Fixed clicking expanding icon of an expandable row triggers `row-click` event, #9654
   - Fixed layout not update when column width is changed by user dragging, #9668

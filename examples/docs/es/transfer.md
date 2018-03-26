@@ -265,6 +265,7 @@ Por defecto Transfer busca los atributos `key`, `label`, y `disabled` en cada el
 | filterable            | Si se puede filtrar                      | boolean                         | —                 | false                                    |
 | filter-placeholder    | Placeholder para el input del filtro     | string                          | —                 | Enter keyword                            |
 | filter-method         | Método de filtrado                       | function                        | —                 | —                                        |
+| target-order          | estrategia de órdenes para elementos de la lista destino. Si está configurado en `original`, los elementos mantendrán el mismo orden que la fuente de datos. Si está configurado para `push`, los nuevos elementos añadidos se insertaran al final. Si se ajusta a `unshift`, los nuevos elementos añadidos se insertarán en la parte superior. | string | original / push / unshift | original |
 | titles                | Títulos de las listas                    | array                           | —                 | ['List 1', 'List 2']                     |
 | button-texts          | Texto de los botones                     | array                           | —                 | [ ]                                      |
 | render-content        | Función de renderizado                   | function(h, option)             | —                 | —                                        |
@@ -282,10 +283,11 @@ Por defecto Transfer busca los atributos `key`, `label`, y `disabled` en cada el
 ### Methods
 | Method | Description | Parameters |
 | ---- | ---- | ---- |
-| clearQuery | clear the filter keyword of a certain panel | 'left' / 'right' |
+| clearQuery | borra la palabra clave del filtro de un determinado panel | 'left' / 'right' |
 
 ### Eventos
 | Nombre | Descripcion                              | Parametros                               |
 | ------ | ---------------------------------------- | ---------------------------------------- |
 | change | se lanzá cuando los elementos cambian en la lista de la derecha | array con las claves de los elementos de la lista de la derecha |
-
+| left-check-change | triggers when end user changes the checked state of any data item in the left list | key array of currently checked items, key array of items whose checked state have changed |
+| right-check-change | triggers when end user changes the checked state of any data item in the right list | key array of currently checked items, key array of items whose checked state have changed |

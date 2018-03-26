@@ -1,33 +1,66 @@
 ## Changelog
 
+### 2.2.2
+
+*2018-03-14*
+
+- Added `clear` event for Input, #9988 (by @blackmiaool)
+- Now manual input of ColorPicker supports `hsl`, `hsv` and `rgb` modes, #9991
+- Fixed DatePicker not triggering `change` event when its initial value is cleared, #9986
+- Now icon class related attributes of Rate support dynamic updates, #10003
+- Fixed Table with fixed columns not updating its height correctly if `max-height` is set, #10034
+- Now DatePicker's range mode supports reverse selection (clicking the end date, then clicking the start date), #8156 (by @earlymeme)
+- Added `disabled` attribute for Pagination, #10006
+- Added `after-enter` and ` after-leave` events for Popover, #10047
+- Fixed Select not triggering validation when user selects an option after executing `resetFields` of Form, #10105
+- Fixed incorrect widths of fixed columns of Table in some cases, #10130
+- Fixed MessageBox inheriting the `title` attribute of its previous instance when called without `title`, #10126 (by @Pochodaydayup)
+- Added `input-size` attribute for Slider, #10154
+- Added `left-check-change` and `right-check-change` events for Transfer, #10156
+
+### 2.2.1
+
+*2018-03-02*
+
+- Corregido Aside, Header y Footer que se contraia en algunos layout, #9812
+- Corregido Table con un atributo `height`  no renderizaba en SSR, #9876
+- Corregido Table con fila expandible no calculaba la altura cuando la fila era expandida, #9484
+- Corregido que cuando se escribia la fecha de forma manual en DateTimePicker no se disparaba el evento  `change`, #9913
+- Corregido que Select mostraba sus opciones cuando se hacia click con el botón derecho del mouse en el Input, #9894 (by @openks)
+- Agregado el atributo `tooltip-class` para Slider, #9957 
+- Ahora Select permanecera enfocado despues de la selección, #9857 (by @Seebiscuit)
+- Agregado el atributo `target-order` para Transfer, #9960
+
 ### 2.2.0 Graphite
 
 *2018-02-12*
 
-### New features
+#### New features
 - Menu
-  - Added `popper-class` and `disabled` attributes for SubMenu, #9604 #9771
-  - Horizontal Menu now supports multi-layered SubMenu, #9741
+  - Agregados los atributos  `popper-class` y `disabled` para SubMenu, #9604 #9771
+  - Menu Horizontal ahora soporta SubMenu multi-capas, #9741
 - Tree
-  - Added `node-contextmenu` event, #9678
-  - Now you can customize node template using scoped slot, #9686
-  - Added `getNode`, `remove`, `append`, `insertBefore`, `insertAfter`, `getCheckedKeys`, `getHalfCheckedNodes`, `getHalfCheckedKeys` methods and `check` event, #9718 #9730
+  - Agregado el evento `node-contextmenu`, #9678
+  - Ahora se puede personalizar el template del nodo usando scoped slot, #9686
+  - Agregados los metodos  `getNode`, `remove`, `append`, `insertBefore`, `insertAfter`, `getCheckedKeys`, `getHalfCheckedNodes`, `getHalfCheckedKeys` y el evento `check`, #9718 #9730
 - Transfer
-  - Added `clearQuery` method, #9753
+  - Agregado el metodo `clearQuery`, #9753
 - Select
-  - Added `popper-append-to-body` attribute, #9782
+  - Agregado el atributo `popper-append-to-body`, #9782
 
-### Bug fixes
+#### Bug fixes
 - Table
-  - Fixed clicking expanding icon of an expandable row triggers `row-click` event, #9654
-  - Fixed layout not update when column width is changed by user dragging, #9668
-  - Fixed style issue when summary row co-exists with fixed columns, #9667
+  - Corregido el icono de expansión de una fila expandible que al hacer click activaba el evento `row-click`, #9654
+  - Corregido el layout que no se actualizaba cuando el ancho de columna era cambiado por el usuario arrastrando, #9668
+  - Corregido problema de estilo cuando la fila de resumen coexistia con columnas fijas, #9667
 - Container
-  - Fixed container components not stretching in IE11, #9655
+  - Corregido componentes del Container que no se estiraban en IE11, #9655
 - Loading
-  - Fixed Loading not showing when the value of `v-loading` is changed to true in the `mounted` hook, #9722
+  - Corregido Loading no se mostraba cuando el valor de `v-loading` era cambiado a true en el `hook`  `mounted`, #9722
 - Switch
-  - Fixed two native click events are triggered when Switch is clicked, #9760
+  - Corregido se disparaban los dos eventos nativos de click cuando se hacia click en el Switch, #9760
+
+    ​
 
 ### 2.1.0 Charcoal
 

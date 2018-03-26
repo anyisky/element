@@ -10,7 +10,7 @@
       :aria-label="title || 'dialog'"
     >
       <div class="el-message-box" :class="[customClass, center && 'el-message-box--center']">
-        <div class="el-message-box__header" v-if="title !== undefined">
+        <div class="el-message-box__header" v-if="title !== null">
           <div class="el-message-box__title">
             <div class="el-message-box__status" :class="[ typeClass ]" v-if="typeClass && center"></div>
             <span>{{ title }}</span>
@@ -37,10 +37,7 @@
             <el-input
               v-model="inputValue"
               :type="inputType"
-              @compositionstart.native="handleComposition"
-              @compositionupdate.native="handleComposition"
-              @compositionend.native="handleComposition"
-              @keyup.enter.native="handleKeyup"
+              @keydown.enter.native="handleAction('confirm')"
               :placeholder="inputPlaceholder"
               ref="input"></el-input>
             <div class="el-message-box__errormsg" :style="{ visibility: !!editorErrorMessage ? 'visible' : 'hidden' }">{{ editorErrorMessage }}</div>
@@ -146,18 +143,6 @@
     },
 
     methods: {
-      handleComposition(event) {
-        if (event.type === 'compositionend') {
-          setTimeout(() => {
-            this.isOnComposition = false;
-          }, 100);
-        } else {
-          this.isOnComposition = true;
-        }
-      },
-      handleKeyup() {
-        !this.isOnComposition && this.handleAction('confirm');
-      },
       getSafeClose() {
         const currentId = this.uid;
         return () => {

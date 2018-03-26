@@ -805,8 +805,8 @@ export default {
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | type         | 类型   | string  | text / textarea | text |
 | value         | 绑定值           | string / number  | — | — |
-| maxlength     | 最大输入长度      | number          |  —  | — |
-| minlength     | 最小输入长度      | number          | — | — |
+| maxlength     | 原生属性，最大输入长度      | number          |  —  | — |
+| minlength     | 原生属性，最小输入长度      | number          | — | — |
 | placeholder   | 输入框占位文本    | string          | — | — |
 | clearable     | 是否可清空        | boolean         | — | false |
 | disabled      | 禁用            | boolean         | — | false   |
@@ -841,6 +841,7 @@ export default {
 | blur | 在 Input 失去焦点时触发 | (event: Event) |
 | focus | 在 Input 获得焦点时触发 | (event: Event) |
 | change | 在 Input 值改变时触发 | (value: string \| number) |
+| clear | 在点击"clearable"属性生成的清空按钮时触发 | (event: Event) |
 
 ### Input Methods
 | 方法名 | 说明 | 参数 |

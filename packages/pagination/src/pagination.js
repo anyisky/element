@@ -42,7 +42,9 @@ export default {
 
     nextText: String,
 
-    background: Boolean
+    background: Boolean,
+
+    disabled: Boolean
   },
 
   data() {
@@ -62,7 +64,7 @@ export default {
     const TEMPLATE_MAP = {
       prev: <prev></prev>,
       jumper: <jumper></jumper>,
-      pager: <pager currentPage={ this.internalCurrentPage } pageCount={ this.internalPageCount } on-change={ this.handleCurrentChange }></pager>,
+      pager: <pager currentPage={ this.internalCurrentPage } pageCount={ this.internalPageCount } on-change={ this.handleCurrentChange } disabled={ this.disabled }></pager>,
       next: <next></next>,
       sizes: <sizes pageSizes={ this.pageSizes }></sizes>,
       slot: <my-slot></my-slot>,
@@ -71,6 +73,7 @@ export default {
     const components = layout.split(',').map((item) => item.trim());
     const rightWrapper = <div class="el-pagination__rightwrapper"></div>;
     let haveRightWrapper = false;
+
     template.children = template.children || [];
     rightWrapper.children = rightWrapper.children || [];
     components.forEach(compo => {
@@ -108,7 +111,7 @@ export default {
         return (
           <button
             type="button"
-            class={['btn-prev', { disabled: this.$parent.internalCurrentPage <= 1 }]}
+            class={['btn-prev', { disabled: this.$parent.disabled || this.$parent.internalCurrentPage <= 1 }]}
             on-click={ this.$parent.prev }>
             {
               this.$parent.prevText
@@ -127,7 +130,7 @@ export default {
             type="button"
             class={[
               'btn-next',
-              { disabled: this.$parent.internalCurrentPage === this.$parent.internalPageCount || this.$parent.internalPageCount === 0 }
+              { disabled: this.$parent.disabled || this.$parent.internalCurrentPage === this.$parent.internalPageCount || this.$parent.internalPageCount === 0 }
             ]}
             on-click={ this.$parent.next }>
             {
@@ -167,7 +170,8 @@ export default {
             <el-select
               value={ this.$parent.internalPageSize }
               popperClass={ this.$parent.popperClass || '' }
-              on-input={ this.handleChange }>
+              on-input={ this.handleChange }
+              disabled={ this.$parent.disabled }>
               {
                 this.pageSizes.map(item =>
                   <el-option
@@ -206,6 +210,14 @@ export default {
       },
 
       components: { ElInput },
+
+      watch: {
+        '$parent.internalPageSize'() {
+          this.$nextTick(() => {
+            this.$refs.input.$el.querySelector('input').value = this.$parent.internalCurrentPage;
+          });
+        }
+      },
 
       methods: {
         handleFocus(event) {
@@ -254,6 +266,7 @@ export default {
               domPropsValue={ this.$parent.internalCurrentPage }
               type="number"
               ref="input"
+              disabled={ this.$parent.disabled }
               nativeOnKeyup={ this.handleKeyup }
               onChange={ this.handleChange }
               onFocus={ this.handleFocus }
@@ -285,11 +298,13 @@ export default {
     },
 
     prev() {
+      if (this.disabled) return;
       const newVal = this.internalCurrentPage - 1;
       this.internalCurrentPage = this.getValidCurrentPage(newVal);
     },
 
     next() {
+      if (this.disabled) return;
       const newVal = this.internalCurrentPage + 1;
       this.internalCurrentPage = this.getValidCurrentPage(newVal);
     },

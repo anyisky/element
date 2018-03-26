@@ -244,9 +244,9 @@
         }
 
         if (this.router) {
-          this.routeToItem(item, error => {
+          this.routeToItem(item, (error) => {
             this.activeIndex = oldActiveIndex;
-            console.error(error);
+            if (error) console.error(error);
           });
         }
       },
