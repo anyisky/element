@@ -441,51 +441,51 @@
     },
 
     created() {
-      this.tableId = 'el-table_' + tableIdSeed++;
-      this.debouncedUpdateLayout = debounce(50, () => this.doLayout());
+      this.tableId = 'el-table_' + tableIdSeed++; // todo 猜测是 创建table组件时，唯一标识id
+      this.debouncedUpdateLayout = debounce(50, () => this.doLayout()); // 组件初始化后，定义执行layout排布
     },
 
     computed: {
       tableSize() {
-        return this.size || (this.$ELEMENT || {}).size;
+        return this.size || (this.$ELEMENT || {}).size; // 取table的size
       },
 
       bodyWrapper() {
-        return this.$refs.bodyWrapper;
+        return this.$refs.bodyWrapper; // table body 下的那个div容器
       },
 
-      shouldUpdateHeight() {
+      shouldUpdateHeight() { // 有定义高度，或者有左右的固定列
         return this.height ||
           this.fixedColumns.length > 0 ||
           this.rightFixedColumns.length > 0;
       },
 
-      selection() {
+      selection() { // todo 这是啥？
         return this.store.states.selection;
       },
 
-      columns() {
+      columns() { // todo 列数？
         return this.store.states.columns;
       },
 
-      tableData() {
+      tableData() { // table需要的列表数据
         return this.store.states.data;
       },
 
-      fixedColumns() {
+      fixedColumns() { // todo 固定列数？？
         return this.store.states.fixedColumns;
       },
 
-      rightFixedColumns() {
+      rightFixedColumns() { // 右侧固定列数？？
         return this.store.states.rightFixedColumns;
       },
 
-      bodyWidth() {
+      bodyWidth() { // 容器宽
         const { bodyWidth, scrollY, gutterWidth } = this.layout;
         return bodyWidth ? bodyWidth - (scrollY ? gutterWidth : 0) + 'px' : '';
       },
 
-      bodyHeight() {
+      bodyHeight() { // 容器高
         if (this.height) {
           return {
             height: this.layout.bodyHeight ? this.layout.bodyHeight + 'px' : ''
@@ -545,7 +545,7 @@
       }
     },
 
-    watch: {
+    watch: { // 监听prop传进来的值，进行对应的view的更新
       height: {
         immediate: true,
         handler(value) {
@@ -560,14 +560,14 @@
         }
       },
 
-      currentRowKey(newVal) {
+      currentRowKey(newVal) { // todo 记录当前active的行？？
         this.store.setCurrentRowKey(newVal);
       },
 
       data: {
         immediate: true,
         handler(value) {
-          this.store.commit('setData', value);
+          this.store.commit('setData', value); // 会对数据进行一些列的处理，如排序等
           if (this.$ready) {
             this.$nextTick(() => {
               this.doLayout();
@@ -576,7 +576,7 @@
         }
       },
 
-      expandRowKeys: {
+      expandRowKeys: { // 记录展开的节点字段
         immediate: true,
         handler(newVal) {
           if (newVal) {
@@ -601,7 +601,7 @@
       };
 
       // init filters
-      this.store.states.columns.forEach(column => {
+      this.store.states.columns.forEach(column => { // 初始化筛选条件
         if (column.filteredValue && column.filteredValue.length) {
           this.store.commit('filterChange', {
             column,

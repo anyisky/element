@@ -3,7 +3,7 @@ import debounce from 'throttle-debounce/debounce';
 import merge from 'element-ui/src/utils/merge';
 import { orderBy, getColumnById, getRowIdentity } from './util';
 
-const sortData = (data, states) => {
+const sortData = (data, states) => { // 排序数据
   const sortingColumn = states.sortingColumn;
   if (!sortingColumn || typeof sortingColumn.sortable === 'string') {
     return data;
