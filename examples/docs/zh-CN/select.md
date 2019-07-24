@@ -168,6 +168,7 @@
           label: '广州'
         }],
         value: '',
+        customIcon: '',
         hasValue: '选项3',
         value2: '',
         value3: '',
@@ -176,6 +177,11 @@
         value6: '',
         value7: '',
         value8: '',
+        value8Mult: '',
+        valuePage: '',
+        valuePageMult: [],
+        hasValuePage: 100,
+        hasValuePageMult: [1, 22, 33, 4, 55, 7, 99, 101, 112, 455, 888, 666],
         value9: '',
         value10: [],
         value11: [],
@@ -192,8 +198,8 @@
       setTimeout(() => {
         this.value5 = ['选项1', '选项2', '选项3', '选项4', '选项5', '选项6', '选项7', '选项8', '选项9', '选项10', '选项11', '选项12', '选项13', '选项14', '选项15', '选项16', '选项17', '选项18', '选项19', '选项10', '选项21', '选项22', '选项23', '选项24', '选项25', '选项26', '选项27', '选项28', '选项29', '选项30']
       }, 0)
-      for (let i = 0; i <= 1000; i++) {
-        this.options123.push({value: 'aaa' + i + 1})
+      for (let i = 0; i < 1000; i++) {
+        this.options123.push({value: Number(i + 1), label: 'aaa' + Number(i + 1)})
       }
     },
 
@@ -220,6 +226,26 @@
   .demo-select .el-select {
     width: 240px;
   }
+  .demo-select .flexBox {
+    padding: 0;
+    display: flex;
+  }
+  .demo-select .block {
+    padding: 30px 0;
+    text-align: center;
+    border-right: solid 1px #EFF2F6;
+    flex: 1;
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .demo-select .demonstration {
+    display: block;
+    color: #8492a6;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
 </style>
 
 ## Select 选择器
@@ -237,7 +263,51 @@ select和radio、checkbox一样，选中值和下拉选项中的值是===比较�
 ```html
 <template>
   <el-select v-model="value" placeholder="请选择">
-    <span slot="prefix" class="el-input__icon el-icon-loading"></span>
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value: ''
+      }
+    }
+  }
+</script>
+```
+:::
+
+### 自定义 icon 的用法
+
+适用广泛的基础单选
+:::demo `v-model`的值为当前被选中的`el-option`的 value 属性值
+```html
+<template>
+  <el-select v-model="customIcon" placeholder="请选择">
+    <span slot="prefix" class="el-input__icon el-icon-message"></span>
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -625,22 +695,41 @@ select和radio、checkbox一样，选中值和下拉选项中的值是===比较�
 ```
 :::
 
-### 可搜索
+### 一般数据量内可搜索
 
 可以利用搜索功能快速查找选项
 
 :::demo 为`el-select`添加`filterable`属性即可启用搜索功能。默认情况下，Select 会找出所有`label`属性包含输入值的选项。如果希望使用其他的搜索逻辑，可以通过传入一个`filter-method`来实现。`filter-method`为一个`Function`，它会在输入值发生变化时调用，参数为当前输入值。
 ```html
 <template>
-  <el-select v-model="value8" size="small" filterable placeholder="请选择" :data-for-paper="options123" :page-size="5" load-more-text="加载更多">
-    <!-- <i slot="prefix" class="el-input__icon el-icon-search"></i> -->
-    <!-- <el-option
-      v-for="item in options123"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option> -->
-  </el-select>
+  <div class="demo-select">
+    <div class="flexBox">
+      <div class="block">
+        <span class="demonstration">单选</span>
+        <el-select v-model="value8" filterable placeholder="请选择">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="block">
+        <span class="demonstration">多选</span>
+        <el-select v-model="value8Mult" filterable multiple placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+    </div>
+  </div>
+  
 </template>
 
 <script>
@@ -663,7 +752,62 @@ select和radio、checkbox一样，选中值和下拉选项中的值是===比较�
           value: '选项5',
           label: '北京烤鸭'
         }],
-        value8: ''
+        value8: '',
+        value8Mult: ''
+      }
+    }
+  }
+</script>
+```
+:::
+
+### 搜索 + 分页
+
+可以利用搜索功能快速查找选项
+
+:::demo 数据通过`data-for-paper`传给组件，`page-size`是每页显示条数，`load-more-text`指定加载更多的文案，注意此时`filterable`必须为真。
+```html
+<template>
+  <div class="demo-select">
+    <div class="flexBox">
+      <div class="block">
+        <span class="demonstration">单选 model值: {{valuePage}}</span>
+        <el-select v-model="valuePage" filterable placeholder="请选择" :data-for-paper="options123" :page-size="5" load-more-text="加载更多"></el-select>
+      </div>
+      <div class="block">
+        <span class="demonstration">多选 model值: {{valuePageMult}}</span>
+        <el-select v-model="valuePageMult" filterable multiple placeholder="请选择" :data-for-paper="options123" :page-size="5" load-more-text="加载更多"></el-select>
+      </div>
+      
+    </div>
+    <div class="flexBox">
+      <div class="block">
+        <span class="demonstration">单选 有默认值 model值: {{hasValuePage}}</span>
+        <el-select v-model="hasValuePage" filterable placeholder="请选择" :data-for-paper="options123" :page-size="5" load-more-text="加载更多"></el-select>
+      </div>
+      <div class="block">
+        <span class="demonstration">多选 有默认值 model值: {{hasValuePageMult}}</span>
+        <el-select v-model="hasValuePageMult" filterable multiple placeholder="请选择" :data-for-paper="options123" :page-size="5" load-more-text="加载更多"></el-select>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        options123: [],
+        valuePage: '',
+        valuePageMult: [],
+        hasValuePage: 1,
+        hasValuePageMult: [1, 22, 33, 4, 55, 7, 99, 101, 112, 455, 888, 666]
+      }
+    },
+    mounted () {
+      // 模拟数据，模拟 1000 条数据
+      for (let i = 0; i < 1000; i++) {
+        this.options123.push({value: Number(i + 1), label: 'aaa' + Number(i + 1)})
       }
     }
   }

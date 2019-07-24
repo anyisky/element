@@ -115,13 +115,15 @@
             created
             v-if="showNewOption">
           </el-option>
+          <!-- begin add by qian load more -->
           <el-option
             v-for="item in pagedData"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="item[aliasKey]"
+            :label="item[aliasLabel]"
+            :value="item[aliasValue]">
           </el-option>
           <div @click="loadMore" v-if="hasMore" class="load-more">{{loadMoreText}}</div>
+          <!-- end add by qian load more -->
           <slot></slot>
         </el-scrollbar>
         <p
@@ -184,13 +186,16 @@
     },
 
     computed: {
+      // begin add by qian load more
       filteredData() {
         return this.dataForPaper.filter(item => {
           if (typeof this.filterMethod === 'function') {
             return this.filterMethod(this.query, item);
           } else {
-            const label = item.label || item.value.toString();
-            return label.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+            // 带分页的初始化时，query的值可能是value 也可能是label，所以要两个都判断
+            const label = item[this.aliasLabel] || '';
+            const value = item[this.aliasValue].toString();
+            return label.toLowerCase().indexOf(this.query.toString().toLowerCase()) > -1 || value.toLowerCase().indexOf(this.query.toString().toLowerCase()) > -1;
           }
         });
       },
@@ -203,6 +208,7 @@
       hasMore() {
         return this.pagedData.length < this.filteredData.length;
       },
+      // end add by qian load more
       _elFormItemSize() {
         return (this.elFormItem || {}).elFormItemSize;
       },
@@ -318,6 +324,7 @@
         type: Boolean,
         default: true
       },
+      // begin add by qian load more
       dataForPaper: {
         type: Array,
         default: () => []
@@ -329,6 +336,18 @@
       loadMoreText: {
         type: String,
         default: '-'
+      }, // // begin add by qian load more
+      aliasKey: {
+        type: String,
+        default: 'value'
+      },
+      aliasValue: {
+        type: String,
+        default: 'value'
+      },
+      aliasLabel: {
+        type: String,
+        default: 'label'
       }
     },
 
@@ -353,7 +372,7 @@
         inputHovering: false,
         currentPlaceholder: '',
         ST: null,
-        currentPage: 1
+        currentPage: 1 // add by qian load more
       };
     },
 
@@ -415,7 +434,7 @@
                 this.selectedLabel = this.selected.currentLabel;
               }
               if (this.filterable) this.query = this.selectedLabel;
-              if (this.filterable && this.dataForPaper.length) this.query = '';
+              if (this.filterable && this.dataForPaper.length) this.query = ''; // add by qian load more
             }
           }
         } else {
@@ -423,7 +442,7 @@
           this.broadcast('ElSelectDropdown', 'updatePopper');
           if (this.filterable) {
             this.query = this.remote ? '' : this.selectedLabel;
-            if (this.dataForPaper.length) this.query = '';
+            if (this.dataForPaper.length) this.query = ''; // add by qian load more
             this.handleQueryChange(this.query);
             if (this.multiple) {
               this.$refs.input.focus();
@@ -461,7 +480,7 @@
     },
 
     methods: {
-      loadMore() {
+      loadMore() { // add by qian load more
         this.currentPage++;
       },
       handleQueryChange(val) {
@@ -474,7 +493,7 @@
           return;
         }
         this.previousQuery = val;
-        this.currentPage = 1;
+        this.currentPage = 1; // add by qian load more
         this.$nextTick(() => {
           if (this.visible) this.broadcast('ElSelectDropdown', 'updatePopper');
         });
@@ -560,10 +579,36 @@
         }
         return newOption;
       },
-
+      getOptionWithPageList(value) {
+        let option;
+        for (let i = 0; i < this.dataForPaper.length; i++) {
+          let item = this.dataForPaper[i];
+          if (value === item[this.aliasValue]) {
+            option = item;
+            option.hitState = false;
+            option.currentLabel = item[this.aliasLabel];
+            break;
+          }
+        }
+        if (option) return option;
+        /* let newOption = {
+          value: value,
+          currentLabel: value
+        };
+        if (this.multiple) {
+          newOption.hitState = false;
+        }
+        return newOption; */
+      },
       setSelected() {
+        // 如果没有选中值，不需要执行设置选中效果
+        if (this.value === undefined || this.value === '') return;
         if (!this.multiple) {
           let option = this.getOption(this.value);
+          // 如果是分页的数据，来自数据list中初始化
+          if (this.pageSize) {
+            option = this.getOptionWithPageList(this.value);
+          }
           if (option.created) {
             this.createdLabel = option.currentLabel;
             this.createdSelected = true;
@@ -572,15 +617,26 @@
           }
           this.selectedLabel = option.currentLabel;
           this.selected = option;
-          if (this.filterable) this.query = this.selectedLabel;
-          if (this.filterable && this.dataForPaper.length) this.query = '';
+          if (this.filterable) {
+            if (!this.query && this.value) { // 当query 没值，value 有值时，才需要给 query 赋值
+              this.query = this.selectedLabel;
+            }
+          }
+          // if (this.filterable) this.query = this.selectedLabel;
+          // if (this.filterable && this.dataForPaper.length) this.query = ''; // add by qian load more
           return;
         }
         let result = [];
         if (Array.isArray(this.value)) {
-          this.value.forEach(value => {
-            result.push(this.getOption(value));
-          });
+          if (this.pageSize) {
+            this.value.forEach(value => {
+              result.push(this.getOptionWithPageList(value));
+            });
+          } else {
+            this.value.forEach(value => {
+              result.push(this.getOption(value));
+            });
+          }
         }
         this.selected = result;
         this.$nextTick(() => {
