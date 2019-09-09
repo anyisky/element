@@ -115,14 +115,8 @@
             created
             v-if="showNewOption">
           </el-option>
-          <el-option
-            v-for="item in pagedData"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-          <div @click="loadMore" v-if="hasMore" class="load-more">{{loadMoreText}}</div>
           <slot></slot>
+          <el-option value="kui-loadmore" :label="loadMoreText" v-show="pagination"></el-option>
         </el-scrollbar>
         <p
           class="el-select-dropdown__empty"
@@ -184,25 +178,6 @@
     },
 
     computed: {
-      filteredData() {
-        return this.dataForPaper.filter(item => {
-          if (typeof this.filterMethod === 'function') {
-            return this.filterMethod(this.query, item);
-          } else {
-            const label = item.label || item.value.toString();
-            return label.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-          }
-        });
-      },
-      pagedData() {
-        if (this.pageSize) {
-          return this.filteredData.slice(0, this.currentPage * this.pageSize);
-        }
-        return this.filteredData;
-      },
-      hasMore() {
-        return this.pagedData.length < this.filteredData.length;
-      },
       _elFormItemSize() {
         return (this.elFormItem || {}).elFormItemSize;
       },
@@ -318,18 +293,15 @@
         type: Boolean,
         default: true
       },
-      dataForPaper: {
-        type: Array,
-        default: () => []
-      },
-      pageSize: {
-        type: Number,
-        default: 50
+      pagination: {
+        type: Boolean,
+        default: false
       },
       loadMoreText: {
         type: String,
-        default: '-'
-      }
+        default: '...'
+      },
+      loadMoreList: Function
     },
 
     data() {
@@ -353,7 +325,7 @@
         inputHovering: false,
         currentPlaceholder: '',
         ST: null,
-        currentPage: 1
+        optionType: ''
       };
     },
 
@@ -369,6 +341,7 @@
       },
 
       value(val) {
+        this.optionType = ''; // select的value变化时，点中加载更多的标志位要reset
         if (this.multiple) {
           this.resetInputHeight();
           if (val.length > 0 || (this.$refs.input && this.query !== '')) {
@@ -394,6 +367,7 @@
           if (this.$refs.input) {
             this.$refs.input.blur();
           }
+          this.optionType = ''; // 下拉弹窗收起的时候，点中加载更多的标志位要reset
           this.query = '';
           this.previousQuery = null;
           this.selectedLabel = '';
@@ -415,7 +389,6 @@
                 this.selectedLabel = this.selected.currentLabel;
               }
               if (this.filterable) this.query = this.selectedLabel;
-              if (this.filterable && this.dataForPaper.length) this.query = '';
             }
           }
         } else {
@@ -423,7 +396,6 @@
           this.broadcast('ElSelectDropdown', 'updatePopper');
           if (this.filterable) {
             this.query = this.remote ? '' : this.selectedLabel;
-            if (this.dataForPaper.length) this.query = '';
             this.handleQueryChange(this.query);
             if (this.multiple) {
               this.$refs.input.focus();
@@ -461,9 +433,6 @@
     },
 
     methods: {
-      loadMore() {
-        this.currentPage++;
-      },
       handleQueryChange(val) {
         if (this.previousQuery === val) return;
         if (
@@ -474,7 +443,6 @@
           return;
         }
         this.previousQuery = val;
-        this.currentPage = 1;
         this.$nextTick(() => {
           if (this.visible) this.broadcast('ElSelectDropdown', 'updatePopper');
         });
@@ -570,10 +538,13 @@
           } else {
             this.createdSelected = false;
           }
-          this.selectedLabel = option.currentLabel;
+          if (this.optionType !== 'kui-loadmore') {
+            this.selectedLabel = option.currentLabel;
+          }
           this.selected = option;
-          if (this.filterable) this.query = this.selectedLabel;
-          if (this.filterable && this.dataForPaper.length) this.query = '';
+          // if (this.filterable) this.query = this.selectedLabel;
+          // 设置初值时，判断是否是从点击加载更多点进来的
+          if (this.filterable && this.optionType !== 'kui-loadmore') this.query = this.selectedLabel;
           return;
         }
         let result = [];
@@ -691,6 +662,12 @@
       },
 
       handleOptionSelect(option) {
+        // 记下点击的是啥option，如果点击的是加载更多的选项
+        this.optionType = option.value;
+        if (this.optionType === 'kui-loadmore' && typeof this.loadMoreList === 'function') {
+          this.loadMoreList(this.query);
+          return;
+        }
         if (this.multiple) {
           const value = this.value.slice();
           const optionIndex = this.getValueIndex(value, option.value);
@@ -708,9 +685,11 @@
           }
           if (this.filterable) this.$refs.input.focus();
         } else {
-          this.$emit('input', option.value);
-          this.emitChange(option.value);
-          this.visible = false;
+          if (this.optionType !== 'kui-loadmore') {
+            this.$emit('input', option.value);
+            this.emitChange(option.value);
+            this.visible = false;
+          }
         }
         this.$nextTick(() => {
           if (this.visible) return;
@@ -782,6 +761,7 @@
       },
 
       onInputChange() {
+        this.optionType = ''; // input 搜索内容变化的时候，点中加载更多的标志位要reset
         if (this.filterable && this.query !== this.selectedLabel) {
           this.query = this.selectedLabel;
           this.handleQueryChange(this.query);
